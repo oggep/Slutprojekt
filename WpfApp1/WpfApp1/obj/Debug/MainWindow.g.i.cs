@@ -80,6 +80,22 @@ namespace WpfApp1 {
         #line default
         #line hidden
         
+        
+        #line 14 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Shapes.Rectangle Obstacle;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 15 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Label scoretext;
+        
+        #line default
+        #line hidden
+        
         private bool _contentLoaded;
         
         /// <summary>
@@ -136,6 +152,12 @@ namespace WpfApp1 {
             return;
             case 5:
             this.player = ((System.Windows.Shapes.Rectangle)(target));
+            return;
+            case 6:
+            this.Obstacle = ((System.Windows.Shapes.Rectangle)(target));
+            return;
+            case 7:
+            this.scoretext = ((System.Windows.Controls.Label)(target));
             return;
             }
             this._contentLoaded = true;
