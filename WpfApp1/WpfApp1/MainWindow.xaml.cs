@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using System.Windows.Threading;
+using System.IO;
 namespace WpfApp1
 {
     /// <summary>
@@ -40,10 +41,27 @@ namespace WpfApp1
         ImageBrush backgroundSprite = new ImageBrush();
         ImageBrush obstacleSprite = new ImageBrush();
 
-        int[] obstaclePosition = { 320, 310, 300 };
+        int[] obstaclePosition = { 320, 310, 300, 305, 315 };
+
+        int score = 0;
         public MainWindow()
         {
             InitializeComponent();
+
+            MyCanvas.Focus();
+            gameTimer.Tick += GameEngine;
+            gameTimer.Interval = TimeSpan.FromMilliseconds(20);
+            var doesExist = File.Exists("image/background.gif");
+            backgroundSprite.ImageSource = new BitmapImage(new Uri("pack://application,,,/image/background.gif"));
+
+            Background.Fill = backgroundSprite;
+            Background2.Fill = backgroundSprite;
+
+        }
+
+        private void GameEngine(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
