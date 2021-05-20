@@ -63,9 +63,9 @@ namespace WpfApp1
         }
         
         private void GameEngine(object sender, EventArgs e){
-            Canvas.SetLeft(Background, Canvas.GetLeft(Background) - 8);
-            Canvas.SetLeft(Background, Canvas.GetLeft(Background2) - 8);
-
+            Canvas.SetLeft(Background, Canvas.GetLeft(Background) - 3);
+            Canvas.SetLeft(Background, Canvas.GetLeft(Background2) - 3);
+            
             if (Canvas.GetLeft(Background) < -1262)
             {
                 Canvas.SetLeft(Background, Canvas.GetLeft(Background2) + Background2.Width);
@@ -105,7 +105,40 @@ namespace WpfApp1
 
                 force -= 1;
             }
+            else 
+            {
+                speed = 12;
+            }
+            if(force < 0)
+            {
+                jumping = false;
+            }
+            if (Canvas.GetLeft(Obstacle) < -50)
+            {
+                Canvas.SetLeft(Obstacle, 950);
+
+                Canvas.SetTop(Obstacle, obstaclePosition[rnd.Next(0, obstaclePosition.Length)]);
+
+                score += 1;
+
+            }
+             if(playerHitBox.IntersectsWith(obstacleHitBox)){
+                gameover = true;
+
+                gameTimer.Stop();
+            }
+             if(gameover = true)
+            {
+                Obstacle.Stroke = Brushes.Black;
+                Obstacle
+            }
         }
+
+        private void IntersectsWith(Rect obstacleHitBox)
+        {
+            throw new NotImplementedException();
+        }
+
         private void RunSprite(double i)
         {
             switch (i)
