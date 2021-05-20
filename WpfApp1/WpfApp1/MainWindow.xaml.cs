@@ -52,7 +52,8 @@ namespace WpfApp1
             MyCanvas.Focus();
             gameTimer.Tick += GameEngine;
             gameTimer.Interval = TimeSpan.FromMilliseconds(20);
-            var doesExist = File.Exists("image/background.gif");
+            var doesExist = File.Exists("/images/background.gif");
+            //var dirs = Directory.GetFiles("images/");
             backgroundSprite.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/background.gif"));
 
             Background.Fill = backgroundSprite;
@@ -127,10 +128,20 @@ namespace WpfApp1
 
                 gameTimer.Stop();
             }
-             if(gameover = true)
+             if(gameover)
             {
                 Obstacle.Stroke = Brushes.Black;
-                Obstacle
+                Obstacle.StrokeThickness = 1;
+
+                player.Stroke = Brushes.Red;
+                player.StrokeThickness = 1;
+
+                scoretext.Content = "Score: " + score + " Press enter to play again!";
+            }
+            else
+            {
+                player.StrokeThickness = 0;
+                Obstacle.StrokeThickness = 0;
             }
         }
 
@@ -203,9 +214,13 @@ namespace WpfApp1
             Canvas.SetTop(Obstacle, 310);
 
             RunSprite(1);
-
             obstacleSprite.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/obstacle.png"));
             Obstacle.Fill = obstacleSprite;
+
+            backgroundSprite.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/background.gif"));
+
+            Background.Fill = backgroundSprite;
+            Background2.Fill = backgroundSprite;
 
             jumping = false;
             gameover = false;
