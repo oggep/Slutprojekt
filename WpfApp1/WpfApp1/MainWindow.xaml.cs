@@ -61,6 +61,51 @@ namespace WpfApp1
             //gameTimer.Start();
 
         }
+        
+        private void GameEngine(object sender, EventArgs e){
+            Canvas.SetLeft(Background, Canvas.GetLeft(Background) - 8);
+            Canvas.SetLeft(Background, Canvas.GetLeft(Background2) - 8);
+
+            if (Canvas.GetLeft(Background) < -1262)
+            {
+                Canvas.SetLeft(Background, Canvas.GetLeft(Background2) + Background2.Width);
+            }
+            if (Canvas.GetLeft(Background2) < -1262)
+            {
+                Canvas.SetLeft(Background2, Canvas.GetLeft(Background2) + Background2.Width);
+            }
+
+            Canvas.SetTop(player, Canvas.GetTop(player) + speed);
+            Canvas.SetLeft(Obstacle, Canvas.GetLeft(Obstacle) - 12);
+
+            scoretext.Content = "Score: " + score;
+            playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width - 15, player.Height);
+            obstacleHitBox = new Rect(Canvas.GetLeft(Obstacle), Canvas.GetTop(Obstacle), Obstacle.Width - 15, Obstacle.Height - 10);
+            groundHitBox = new Rect(Canvas.GetLeft(Ground), Canvas.GetTop(Ground), Ground.Width - 15, Ground.Height - 10);
+            
+            if (playerHitBox.IntersectsWith(groundHitBox))
+            {
+                speed = 0;
+
+                Canvas.SetTop(player, Canvas.GetTop(Ground) - player.Height);
+
+                jumping = false;
+
+                spriteIndex += .5;
+
+                if(spriteIndex > 8)
+                {
+                    spriteIndex = 1;
+                }
+                RunSprite(spriteIndex);
+            }
+            if(jumping == true)
+            {
+                speed = -9;
+
+                force -= 1;
+            }
+        }
         private void RunSprite(double i)
         {
             switch (i)
@@ -93,27 +138,6 @@ namespace WpfApp1
 
             player.Fill = playerSprite;
 
-        }
-        private void GameEngine(object sender, EventArgs e){
-            Canvas.SetLeft(Background, Canvas.GetLeft(Background) - 8);
-            Canvas.SetLeft(Background, Canvas.GetLeft(Background2) - 8);
-
-            if (Canvas.GetLeft(Background) < -1262)
-            {
-                Canvas.SetLeft(Background, Canvas.GetLeft(Background2) + Background2.Width);
-            }
-            if (Canvas.GetLeft(Background2) < -1262)
-            {
-                Canvas.SetLeft(Background2, Canvas.GetLeft(Background2) + Background2.Width);
-            }
-
-            Canvas.SetTop(player, Canvas.GetTop(player) - speed);
-            Canvas.SetLeft(Obstacle, Canvas.GetLeft(Obstacle) - 12);
-
-            scoretext.Content = "Score: " + score;
-            playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width - 15, player.Height - 10);
-            obstacleHitBox = new Rect(Canvas.GetLeft(Obstacle), Canvas.GetTop(Obstacle), Obstacle.Width - 15, Obstacle.Height - 10);
-            playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width - 15, player.Height - 10);
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
