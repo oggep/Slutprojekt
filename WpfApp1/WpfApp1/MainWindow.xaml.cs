@@ -22,44 +22,51 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        //Skapar en ny instans av DispatcherTimer som heter timer 
         DispatcherTimer gameTimer = new DispatcherTimer();
+
+        //Hitboxar för objekten
         Rect playerHitBox;
         Rect groundHitBox;
         Rect obstacleHitBox;
 
+        //Boolean för att känna av om gubben hoppar
         bool jumping;
-
+        
+        //variabler för kraft och hastighet
         int force = 20;
         int speed = 5;
 
+        //Skapar instans av Random vid namn rnd
         Random rnd = new Random();
 
+        //Boolean för att känna av om spelet är över eller inte
         bool gameover = true;
 
+        //Animationer för sprites
         double spriteIndex = 0;
-
+        //Skapar instanser av imagebrush för mina sprites/objekt
         ImageBrush playerSprite = new ImageBrush();
         ImageBrush backgroundSprite = new ImageBrush();
         ImageBrush obstacleSprite = new ImageBrush();
 
+        //Höjd positionering för mitt hinder
         int[] obstaclePosition = { 320, 310, 300, 305, 315 };
 
         int score = 0;
         public MainWindow()
         {
             InitializeComponent();
-
+            //
             MyCanvas.Focus();
             gameTimer.Tick += GameEngine;
             gameTimer.Interval = TimeSpan.FromMilliseconds(20);
+            //Denna ger backgrounden sin bild och placering
             var doesExist = File.Exists("/images/background.gif");
-            //var dirs = Directory.GetFiles("images/");
             backgroundSprite.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/background.gif"));
 
             Background.Fill = backgroundSprite;
             Background2.Fill = backgroundSprite;
-
-            //gameTimer.Start();
 
         }
         
@@ -149,7 +156,7 @@ namespace WpfApp1
         {
             throw new NotImplementedException();
         }
-
+        //Denna metod sköter animationerna för min playersprite
         private void RunSprite(double i)
         {
             switch (i)
@@ -183,51 +190,63 @@ namespace WpfApp1
             player.Fill = playerSprite;
 
         }
-
+        //Denna metod startar spelet när man trycker på enter-knappen. 
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
+            //if-satsen känner av om man trycker på enter och att spelet är över.
             if (e.Key == Key.Enter && gameover == true)
             {
                 StartGame();
             }
         }
+        //Denna metód gör att man kan hoppa i mitt spel när man trycker på space knappen.
         private void KeyIsUp(object sender, KeyEventArgs e)
         {
+            //if-satsen känner av om man trycker på space och att jumping är falskt och man har positionen vid marken.
             if (e.Key == Key.Space && jumping == false && Canvas.GetTop(player) > 260)
             {
+                //dessa rader kod gör att jumping är sant, kraften ökar och hastigheten minskar.
                 jumping = true;
                 force = 15;
                 speed = -12;
 
+                //här byter player till hopp animationen.
                 playerSprite.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/newRunner_02.gif"));
             }
         }
+        //Denna metod sköter starten oh återställningen av spelet. 
         private void StartGame()
         {
+            //Återställer placering för bakgrund, player och hinder
             Canvas.SetLeft(Background, 0);
             Canvas.SetLeft(Background, 1262);
 
             Canvas.SetLeft(player, 110);
-            Canvas.SetTop(Obstacle, 140);
+            Canvas.SetTop(player, 140);
 
             Canvas.SetLeft(Obstacle, 950);
             Canvas.SetTop(Obstacle, 310);
 
+            //sätter bilden för hindret
             RunSprite(1);
             obstacleSprite.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/obstacle.png"));
             Obstacle.Fill = obstacleSprite;
 
+            //lägger bakgrunden för spelet.
             backgroundSprite.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/background.gif"));
 
             Background.Fill = backgroundSprite;
             Background2.Fill = backgroundSprite;
 
+            //återställer värdena för jumping, gameover och score
             jumping = false;
             gameover = false;
             score = 0;
 
+            //denna ändrar poängen i spelet
             scoretext.Content = "Score:" + score;
 
+            //Denna startar om speltimern 
             gameTimer.Start();
         }
     }
