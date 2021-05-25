@@ -17,9 +17,7 @@ using System.Windows.Threading;
 using System.IO;
 namespace WpfApp1
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+ 
     public partial class MainWindow : Window
     {
         //Skapar en ny instans av DispatcherTimer som heter timer 
@@ -52,7 +50,8 @@ namespace WpfApp1
 
         //Höjd positionering för mitt hinder
         int[] obstaclePosition = { 320, 310, 300, 305, 315 };
-
+        
+        //sätter score till 0
         int score = 0;
         public MainWindow()
         {
@@ -69,8 +68,9 @@ namespace WpfApp1
             Background2.Fill = backgroundSprite;
 
         }
-        
+        //Denna metod sköter själva spelet.
         private void GameEngine(object sender, EventArgs e){
+            //Kodraderna under ger placering på bakgrunden.
             Canvas.SetLeft(Background, Canvas.GetLeft(Background) - 3);
             Canvas.SetLeft(Background, Canvas.GetLeft(Background2) - 3);
             
@@ -87,10 +87,12 @@ namespace WpfApp1
             Canvas.SetLeft(Obstacle, Canvas.GetLeft(Obstacle) - 12);
 
             scoretext.Content = "Score: " + score;
+            //Dessa radena kod ger spelarna en  
             playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width - 15, player.Height);
             obstacleHitBox = new Rect(Canvas.GetLeft(Obstacle), Canvas.GetTop(Obstacle), Obstacle.Width - 15, Obstacle.Height - 10);
             groundHitBox = new Rect(Canvas.GetLeft(Ground), Canvas.GetTop(Ground), Ground.Width - 15, Ground.Height - 10);
             
+            //Denna if sats sköter informationen som skickas när playerhitboxen och groundhitboxen nuddar varandra
             if (playerHitBox.IntersectsWith(groundHitBox))
             {
                 speed = 0;
@@ -107,6 +109,7 @@ namespace WpfApp1
                 }
                 RunSprite(spriteIndex);
             }
+            //Denna sköter så att du kan hoppa i spelet och vad som händer annars om man inte hoppar
             if(jumping == true)
             {
                 speed = -9;
@@ -117,10 +120,12 @@ namespace WpfApp1
             {
                 speed = 12;
             }
+            //om 0 är större än kraften så hoppar man inte
             if(force < 0)
             {
                 jumping = false;
             }
+            //denna funktionen gör att du får poäng när du passerar ett hinder. Denna ger även en random placering i höjd.
             if (Canvas.GetLeft(Obstacle) < -50)
             {
                 Canvas.SetLeft(Obstacle, 950);
@@ -130,11 +135,13 @@ namespace WpfApp1
                 score += 1;
 
             }
+            //Om player nuddar hindret så stoppas spelet
              if(playerHitBox.IntersectsWith(obstacleHitBox)){
                 gameover = true;
 
                 gameTimer.Stop();
             }
+             //när spelet stoppas så visas hitboxen och då säger även score att man trycker på space för att spela igen.
              if(gameover)
             {
                 Obstacle.Stroke = Brushes.Black;
@@ -145,6 +152,7 @@ namespace WpfApp1
 
                 scoretext.Content = "Score: " + score + " Press enter to play again!";
             }
+             //annars så visas ingen hitbox
             else
             {
                 player.StrokeThickness = 0;
